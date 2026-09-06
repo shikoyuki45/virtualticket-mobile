@@ -1,12 +1,220 @@
-virtualticket-mobile
-
-Name your file...
-↓
-index.html
-
-Enter file contents here
-↓
 <!DOCTYPE html>
 <html lang="ja">
-...
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+  <title>VirtualTicket Mobile</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: #f4f5f7;
+      color: #111827;
+    }
+
+    header {
+      padding: calc(18px + env(safe-area-inset-top)) 20px 18px;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    main {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .event-image {
+      height: 180px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #111827, #4f46e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0 0 18px;
+    }
+
+    .row {
+      padding: 14px 0;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    .label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 5px;
+    }
+
+    .value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .status {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 700;
+      background: #f3f4f6;
+    }
+
+    button {
+      width: 100%;
+      min-height: 56px;
+      margin-top: 18px;
+      border: none;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 700;
+      background: #111827;
+      color: #ffffff;
+    }
+
+    button:disabled {
+      background: #d1d5db;
+      color: #6b7280;
+    }
+
+    .note {
+      margin-top: 16px;
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">VirtualTicket Mobile</div>
+</header>
+
+<main>
+  <div class="card">
+
+    <div class="event-image">
+      VIRTUAL LIVE
+    </div>
+
+    <h1>Virtual Idol Festival 2026</h1>
+
+    <div class="row">
+      <div class="label">イベント名</div>
+      <div class="value">Virtual Idol Festival 2026</div>
+    </div>
+
+    <div class="row">
+      <div class="label">開催日時</div>
+      <div class="value">2026年9月20日 18:00</div>
+    </div>
+
+    <div class="row">
+      <div class="label">販売開始日時</div>
+      <div class="value" id="salesStartDisplay">-</div>
+    </div>
+
+    <div class="row">
+      <div class="label">チケット種類</div>
+      <div class="value">一般チケット</div>
+    </div>
+
+    <div class="row">
+      <div class="label">料金</div>
+      <div class="value">¥3,000</div>
+    </div>
+
+    <div id="salesStatus" class="status">
+      時刻確認中
+    </div>
+
+    <button id="applyButton" disabled>
+      販売開始前
+    </button>
+
+    <div class="note">
+      VirtualTicket Mobileはプログラミング実験専用の架空サイトです。
+      実際の購入・決済は発生しません。
+    </div>
+
+  </div>
+</main>
+
+<script>
+  const salesStartAt = "2026-09-07T23:00:00+09:00";
+
+  const salesStartTime = new Date(salesStartAt).getTime();
+
+  const button =
+    document.getElementById("applyButton");
+
+  const status =
+    document.getElementById("salesStatus");
+
+  const display =
+    document.getElementById("salesStartDisplay");
+
+  display.textContent =
+    new Date(salesStartAt).toLocaleString("ja-JP", {
+      timeZone: "Asia/Tokyo"
+    });
+
+  function updateSalesState() {
+    const now = Date.now();
+
+    if (now >= salesStartTime) {
+      status.textContent = "販売中";
+      button.textContent = "申し込みをする";
+      button.disabled = false;
+    } else {
+      status.textContent = "販売開始前";
+      button.textContent = "販売開始前";
+      button.disabled = true;
+    }
+  }
+
+  button.addEventListener("click", function () {
+    if (Date.now() < salesStartTime) {
+      return;
+    }
+
+    location.href = "ticket.html";
+  });
+
+  updateSalesState();
+  setInterval(updateSalesState, 100);
+</script>
+
+</body>
 </html>
